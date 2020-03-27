@@ -1,0 +1,6 @@
+name: CherryColaCore
+version: ${project.version}
+main: com.cherrycolagaming.CherryColaCore
+api-version: 1.13
+load: STARTUP
+authors: [7rory768]
