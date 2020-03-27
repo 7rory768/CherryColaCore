@@ -47,9 +47,9 @@ public class EntityDamageEntityListener implements Listener {
 			new BukkitRunnable() {
 				@Override
 				public void run() {
-					Vector velocity = entity.getVelocity().multiply(15);
+					Vector velocity = entity.getVelocity().multiply(12);
 					if (player != null && !player.isSneaking()) {
-						velocity.setX(0).setZ(0);
+							velocity.setX(0).setZ(0);
 					}
 					entity.setVelocity(velocity);
 				}
