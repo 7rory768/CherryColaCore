@@ -4,10 +4,7 @@ import com.cherrycolagaming.CherryColaCore;
 import com.cherrycolagaming.managers.IronGolemManager;
 import com.cherrycolagaming.util.MessagingUtil;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -16,7 +13,7 @@ import org.bukkit.util.Vector;
 
 public class EntityDamageEntityListener implements Listener {
 
-	private final CherryColaCore plugin;
+	private final CherryColaCore   plugin;
 	private final IronGolemManager ironGolemManager;
 
 	public EntityDamageEntityListener(CherryColaCore plugin, IronGolemManager ironGolemManager) {
@@ -29,9 +26,8 @@ public class EntityDamageEntityListener implements Listener {
 	@EventHandler
 	public void onEntityDamageEntity(EntityDamageByEntityEvent e) {
 		if (e.getDamager().getType() == EntityType.IRON_GOLEM) {
-			((LivingEntity) e.getDamager()).setHealth(((LivingEntity) e.getDamager()).getMaxHealth());
 			Entity entity = e.getEntity();
-			Player p = null;
+			Player p      = null;
 			if (entity.getType() == EntityType.PLAYER) {
 				p = (Player) entity;
 				ironGolemManager.addWaitingToFall(p);
@@ -44,18 +40,23 @@ public class EntityDamageEntityListener implements Listener {
 				damager.setCustomName(MessagingUtil.format("&7Times Launched: &c" + (Integer.valueOf(ChatColor.stripColor(damager.getCustomName()).substring(16)) + 1)));
 			}
 
-			final Player player  = p;
+			final Player player = p;
 			new BukkitRunnable() {
 				@Override
 				public void run() {
 					Vector velocity = entity.getVelocity().multiply(12);
 					if (player != null && !player.isSneaking()) {
-							velocity.setX(0).setZ(0);
+						velocity.setX(0).setZ(0);
 					}
 					entity.setVelocity(velocity);
 				}
 			}.runTaskLaterAsynchronously(plugin, 0L);
+		} else if (e.getEntityType() == EntityType.IRON_GOLEM && e.getDamager().getType() != EntityType.PLAYER && e.getEntity().isCustomNameVisible()) {
+			Entity damager = e.getDamager();
+			if (damager instanceof Projectile && ((Projectile) damager).getShooter() instanceof Player) {
+				return;
+			}
+			e.setCancelled(true);
 		}
 	}
-
 }
