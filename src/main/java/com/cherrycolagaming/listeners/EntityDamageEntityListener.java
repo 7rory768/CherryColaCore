@@ -29,6 +29,7 @@ public class EntityDamageEntityListener implements Listener {
 	@EventHandler
 	public void onEntityDamageEntity(EntityDamageByEntityEvent e) {
 		if (e.getDamager().getType() == EntityType.IRON_GOLEM) {
+			((LivingEntity) e.getDamager()).setHealth(((LivingEntity) e.getDamager()).getMaxHealth());
 			Entity entity = e.getEntity();
 			Player p = null;
 			if (entity.getType() == EntityType.PLAYER) {
