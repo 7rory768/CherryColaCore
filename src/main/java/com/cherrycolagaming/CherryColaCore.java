@@ -1,9 +1,6 @@
 package com.cherrycolagaming;
 
-import com.cherrycolagaming.listeners.CreatureSpawnListener;
-import com.cherrycolagaming.listeners.EntityDamageEntityListener;
-import com.cherrycolagaming.listeners.EntityDamageListener;
-import com.cherrycolagaming.listeners.EntityExplodeListener;
+import com.cherrycolagaming.listeners.*;
 import com.cherrycolagaming.managers.IronGolemManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -29,10 +26,12 @@ public final class CherryColaCore extends JavaPlugin {
 	}
 
 	public void registerListeners() {
+		new BeeHiveListener(this);
 		new CreatureSpawnListener(this);
 		new EntityDamageEntityListener(this, ironGolemManager);
 		new EntityDamageListener(this, ironGolemManager);
 		new EntityExplodeListener(this);
+		new ShearSheepListener(this);
 	}
 
 }
